@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <title>Insurance Premium Prediction</title>
+      <style>
+          .pd-10{ padding: 10px; }
+          .pd-20{ padding: 20px; }
+          section:not(:first-child)  { margin-top: 15px; }
+          .mt-1half-rem { margin-top: 1.6rem; }
+
+          .file-upload {
+            background-color: #ffffff;
+            width: 600px;
+            margin: 0 auto;
+          }
+
+          .file-upload-btn {
+            width: 100%;
+            margin: 0;
+            color: #fff;
+            background: #999;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            border-bottom: 4px solid #15824B;
+            transition: all .2s ease;
+            outline: none;
+            text-transform: uppercase;
+            font-weight: 700;
+          }
+
+          .file-upload-btn:hover {
+            background: #1AA059;
+            color: #ffffff;
+            transition: all .2s ease;
+            cursor: pointer;
+          }
+
+          .file-upload-btn:active {
+            border: 0;
+            transition: all .2s ease;
+          }
+
+          .file-upload-content {
+            display: none;
+            text-align: center;
+          }
+
+          .file-upload-input {
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            outline: none;
+            opacity: 0;
+            cursor: pointer;
+          }
+
+          .file-upload-wrap {
+            margin-top: 20px;
+            border: 4px dashed #999;
+            position: relative;
+          }
+
+          .file-upload-wrap:hover {
+            background-color: #999;
+            border: 4px dashed #ffffff;
+          }
+
+          .file-upload-wrap:hover h3{
+            color: #fff;
+          }
+
+          .file-title-wrap {
+            padding: 0 15px 15px 15px;
+            color: #222;
+          }
+
+          .drag-text {
+            text-align: center;
+          }
+
+          .drag-text h3 {
+            font-weight: 100;
+            text-transform: uppercase;
+            color: #999;
+            padding: 38px 0;
+          }
+
+          .file-upload-file {
+            max-height: 200px;
+            max-width: 200px;
+            margin: auto;
+            padding: 20px;
+          }
+
+          .remove-file {
+            width: 200px;
+            margin: 0;
+            color: #fff;
+            background: #cd4535;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            border-bottom: 4px solid #b02818;
+            transition: all .2s ease;
+            outline: none;
+            text-transform: uppercase;
+            font-weight: 700;
+          }
+
+          .remove-file:hover {
+            background: #c13b2a;
+            color: #ffffff;
+            transition: all .2s ease;
+            cursor: pointer;
+          }
+
+          .remove-file:active {
+            border: 0;
+            transition: all .2s ease;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!--Header Section-->
+      <section class="navbar-dark bg-dark text-center pd-10">
+          <div class="h1 text-white text-center">Welcome To Insurance Premium Predictor</div>
+      </section>
+      <!--/Header Section-->
+
+      <!--Insurance Details Form Section-->
+      <section id="insurance-form" class="pd-10">
+        <div class="row">
+          <div class="col-6 pd-10">
+            <div class="card">
+              <div class="card-header">
+                Insurance Premium Prediction
+              </div>
+                <div class="card-body">
+                  <form action="/" method="post">
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="age">Age</label>
+                        <input type="number" class="form-control" id="age" name="age" placeholder="Age" min="0" max="100" required>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="sex">Gender</label>
+                        <select name="sex" id="sex" class="form-control" required>
+                          <option value="" disabled selected>Select Gender</option>
+                          <option value="male">male</option>
+                          <option value="female">female</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="bmi">BMI</label>
+                        <input type="text" class="form-control" id="bmi" name="bmi" placeholder="BMI" step="0.01" required>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="children">Children</label>
+                        <select type="number" class="form-control" id="children" name="children" required>
+                          <option value="" disabled selected>Number of Childrens</option>
+                          {% for i in range(11): %}
+                          <option value="{{ i }}">{{ i }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="smoker">Smoker</label>
+                        <select id="smoker" name="smoker" class="form-control" required>
+                          <option value="" disabled selected>Smoker</option>
+                          <option value="yes">yes</option>
+                          <option value="no">no</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="region">Region</label>
+                        <select id="region" name="region" class="form-control" required>
+                          <option value="" disabled selected>Select Region</option>
+                          <option value="southeast">southeast</option>
+                          <option value="southwest">southwest</option>
+                          <option value="northeast">northeast</option>
+                          <option value="northwest">northwest</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+          </div>
+          <div class="col-6 pd-10">
+            <div class="card">
+              <div class="card-header">
+                Bulk Premium Prediction
+              </div>
+              <div class="card-body">
+                <form action="/" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="bulk" value="true">
+                  <div class="file-upload">
+                    <div class="file-upload-wrap">
+                      <input class="file-upload-input" type='file' name="file" onchange="readURL(this);" required/>
+                      <div class="drag-text">
+                        <h3>Drag and drop a file or select a File</h3>
+                      </div>
+                    </div>
+                    <div class="file-upload-content">
+                      <div class="file-title-wrap">
+                        <button type="button" onclick="removeUpload()" class="remove-file">Remove <span class="file-title">Uploaded File</span></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-1half-rem">
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--/Insurance Details Form Section-->
+
+      {% if predictions and predictions['outputError'] %}
+      <div class="row">
+        <div class="col-12 h3 text-danger">
+          {{ predictions['outputError'] }}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if predictions and predictions['predictions'] %}
+      <section id="form-response">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">Premium Predictions</div>
+              <div class="card-body">
+                <table id="premium-table" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>BMI</th>
+                      <th>Children</th>
+                      <th>Smoker</th>
+                      <th>Region</th>
+                      <th>Premium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for prediction in predictions.values() %}
+                    <tr>
+                      <td>{{ prediction.age }}</td>
+                      <td>{{ prediction.sex }}</td>
+                      <td>{{ prediction.bmi }}</td>
+                      <td>{{ prediction.children }}</td>
+                      <td>{{ prediction.smoker }}</td>
+                      <td>{{ prediction.region }}</td>
+                      <td>{{ prediction.premium }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {% endif %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+  <script>
+    $(document).ready( function () {
+        $('#premium-table').DataTable();
+    } );
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('.file-upload-wrap').hide();
+
+          $('.file-upload-file').attr('src', e.target.result);
+          $('.file-upload-content').show();
+
+          $('.file-title').html(input.files[0].name);
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        removeUpload();
+      }
+    }
+
+    function removeUpload() {
+      $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+      $('.file-upload-content').hide();
+      $('.file-upload-wrap').show();
+    }
+    $('.file-upload-wrap').bind('dragover', function () {
+            $('.file-upload-wrap').addClass('file-dropping');
+        });
+        $('.file-upload-wrap').bind('dragleave', function () {
+            $('.file-upload-wrap').removeClass('file-dropping');
+    });
+  </script>
+  </body>
+</html>
