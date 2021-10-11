@@ -46,5 +46,5 @@ class FileHandler:
 
     def load_pickle(self, object_name):
         object_folder = self.conf.config['DEFAULT']['OBJECT_FOLDER']
-        return pickle.load(os.path.join(object_folder, object_name))
+        return pickle.load(open(os.path.join(object_folder, object_name), 'rb'))
 

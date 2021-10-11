@@ -65,6 +65,7 @@ class DataValidator(AppLogger):
         data: dict
             contains features name as key and form value as value
         """
+        self.log(f"{self.cur_file_path}\t\tInfo: form_data_validate method invoked!")
         features = self.__FORM_DATA_VALIDATION_RULE
         if data.keys() == features.keys():
             for key, value in data.items():
@@ -87,6 +88,7 @@ class DataValidator(AppLogger):
             If true validate file based on __TRAINING_DATA_VALIDATION_RULE
             If False validate file based on __BULK_DATA_VALIDATION_RULE
         """
+        self.log(f"{self.cur_file_path}\t\tInfo: bulk_data_validate method invoked!")
         try:
             file_extension = pathlib.Path(file_path).suffix
             if file_extension == '.csv':

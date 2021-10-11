@@ -17,15 +17,16 @@ class TrainingController(Controller):
         self.data_dir = self.config['DEFAULT']['TRAINING_DATA_FOLDER']
 
     def start_training(self):
+        """Start the complete model training process"""
+        self.log(f"{self.cur_file_path}\t\tInfo: start_training method invoked!")
         try:
-            self.log(f"{self.cur_file_path}\t\tInfo: Training Process Started!")
             # Filter training data dir
             self.__filter_training_data_files()
 
             # Merge all valid files data
             training_data = self.__merge_training_data()
 
-            if training_data:
+            if training_data.shape and training_data.shape[0] > 0:
                 # Data Preprocessing
                 train_test_data = DataPreprocessing(training_data, True).get_preprocessed_data()
 
@@ -46,7 +47,7 @@ class TrainingController(Controller):
     def __filter_training_data_files(self):
         """Filter training data files by moving invalid files into archive_data directory """
 
-        self.log(f"{self.cur_file_path}\t\tInfo: Validating training data!")
+        self.log(f"{self.cur_file_path}\t\tInfo: __filter_training_data_files method invoked!")
         # Read all files from data_dir
         training_files = glob.glob(os.path.join(self.data_dir, '*'))
 
@@ -66,10 +67,9 @@ class TrainingController(Controller):
 
     def __merge_training_data(self):
         """Merge all training dataset files data and remove the duplicate data"""
+        self.log(f"{self.cur_file_path}\t\tInfo: __merge_training_data method invoked!")
 
-        self.log(f"{self.cur_file_path}\t\tInfo: Merging all training data and removing duplicate rows!")
         training_files = glob.glob(os.path.join(self.data_dir, '*'))
-
         for i, file_path in enumerate(training_files):
             df = pd.read_csv(file_path)
             if i == 0:

@@ -33,7 +33,7 @@ class PredictionController(Controller):
         data: request.form data
             independent variables value for prediction
         """
-        self.log(f"{self.cur_file_path}\t\tInfo: Predicting Insurance Premium For Single Data!")
+        self.log(f"{self.cur_file_path}\t\tInfo: single_data_prediction method invoked!")
         resp = {}
         try:
             resp['predictions'] = {
@@ -62,7 +62,7 @@ class PredictionController(Controller):
         input_file: request.file data
             User uploaded file
         """
-        self.log(f"{self.cur_file_path}\t\tInfo: Predicting Insurance Premium For Bulk Data!")
+        self.log(f"{self.cur_file_path}\t\tInfo: bulk_data_prediction method invoked!")
         resp = {}
         try:
             self.log(f"{self.cur_file_path}\t\tInfo: Uploading user uploaded file!")
@@ -80,7 +80,14 @@ class PredictionController(Controller):
         finally:
             return resp
 
-    def __start_prediction(self, df: pd.DataFrame):
+    def __start_prediction(self, df: pd.DataFrame()):
+        """Handle premium prediction process
+        :parameter
+        -----------
+        df: pandas DataFrame object
+        """
+
+        self.log(f"{self.cur_file_path}\t\tInfo: __start_prediction method invoked!")
         # Data Preprocessing
 
         # Loading best fitted data

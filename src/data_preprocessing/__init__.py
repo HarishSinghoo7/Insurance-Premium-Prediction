@@ -15,8 +15,13 @@ class DataPreprocessing(AppLogger):
         self.train = train
 
     def get_preprocessed_data(self):
+        """Handle complete data preprocessing process
+            :return
+            if train = true it will return train-test split result as a tuple
+            otherwise numpy array of StandardScaler transformation
+        """
+        self.log(f"{self.cur_file_path}\t\tInfo: get_preprocessed_data method invoked!")
 
-        self.log(f"{self.cur_file_path}\t\tInfo: Starting data preprocessing!")
         # Data Imputation (No need with current dataset)
 
         # Removing outliers from numeric data bmi and expenses
@@ -31,5 +36,5 @@ class DataPreprocessing(AppLogger):
         self.dataset = CategoricalDataEncoder(self.dataset, train=self.train).one_hot_encoder()
 
         # Feature Scaling
-        self.log(f"{self.cur_file_path}\t\tInfo: Feature scaling!")
+        self.log(f"{self.cur_file_path}\t\tInfo: Starting feature scaling process!")
         return FeatureScaling(self.dataset, self.train).scale()

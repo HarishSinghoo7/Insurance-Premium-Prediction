@@ -1,3 +1,5 @@
+import pandas as pd
+
 from src import app
 from flask import render_template, request, jsonify
 from src.controller.prediction_controller import PredictionController
